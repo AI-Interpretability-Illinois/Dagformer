@@ -1,4 +1,7 @@
-# DAGFormer
+# Project notes
+
+Development notes for collaborators, moved from the README on 2026-10-15. Paths refer to the Delta cluster.
+
 
 DAGFormer studies learned, per-token, per-head routing between transformer
 layers. The current implementation trains an OLMo-2 backbone from scratch with
