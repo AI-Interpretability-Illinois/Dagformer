@@ -41,54 +41,58 @@ Prefill time per token relative to the vanilla Transformer (forward pass over 8 
 | 300M | 1.00 | 1.02 | 2.14 | 1.74 | 1.54 | 1.89 |
 | 1B | 1.00 | 1.01 | 1.90 | 1.54 | 1.36 | 1.81 |
 
-**Evaluation tasks.** Base models, mean accuracy (%) per kind of task: commonsense (HellaSwag, PIQA, WinoGrande, CommonsenseQA, Social IQa), science (ARC-Easy/Challenge, OpenBookQA, SciQ), reading (BoolQ, LAMBADA) and math (MathQA, GSM8K, both close to chance at these sizes), and over all 13 tasks. Mean rank: rank within the block averaged over the 13 tasks (1 = best). Bold: best per block.
+**Evaluation tasks.** Base models, mean accuracy (%) per kind of task: commonsense (HellaSwag, PIQA, WinoGrande, CommonsenseQA, Social IQa), science (ARC-Easy/Challenge, OpenBookQA, SciQ), reading (BoolQ, LAMBADA) and math (MathQA, GSM8K, both close to chance at these sizes), and over all 13 tasks. Mean rank: rank among the models of a size, averaged over the 13 tasks (1 = best). Bold: best per row. –: not run (the baselines were trained at 5B tokens only).
 
-| Size | Model | Commonsense (5) | Science (4) | Reading (2) | Math (2) | Mean (13) | Mean rank |
+| Size | Kind of task | vanilla | DenseFormer | Hyper-conn. | mHC | MUDDFormer | DAGFormer |
 |:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| 300M | vanilla | 39.8 | 36.5 | 38.1 | 11.7 | 34.2 | 4.15 |
-|  | DenseFormer | 38.9 | 36.5 | 40.8 | 12.7 | 34.4 | 4.23 |
-|  | Hyper-conn. | 38.5 | 38.5 | 38.3 | 12.3 | 34.4 | 3.69 |
-|  | mHC | 39.2 | 38.8 | 41.8 | **12.9** | 35.4 | 2.54 |
-|  | MUDDFormer | 39.7 | 38.6 | 40.9 | 11.5 | 35.2 | 3.08 |
-|  | DAGFormer | **39.9** | **39.8** | **43.5** | 12.8 | **36.2** | **2.38** |
-| 1B, 5B tokens | vanilla | 40.0 | 38.9 | 42.1 | 12.1 | 35.7 | 4.54 |
-|  | DenseFormer | 40.2 | 39.5 | 43.0 | 11.4 | 36.0 | 4.38 |
-|  | Hyper-conn. | 40.7 | 40.7 | 41.6 | 12.0 | 36.4 | 3.77 |
-|  | mHC | 41.1 | 42.2 | 43.8 | **12.5** | 37.4 | 2.62 |
-|  | MUDDFormer | 40.7 | 42.4 | 38.3 | 12.2 | 36.5 | 3.15 |
-|  | DAGFormer | **41.8** | **43.0** | **44.7** | 12.4 | **38.1** | **2.08** |
-| 1B, 10B tokens | vanilla | 40.5 | 41.0 | 43.0 | 11.5 | 36.6 | – |
-|  | DAGFormer | **42.4** | **44.1** | **47.0** | **12.8** | **39.1** | – |
+| 300M | Commonsense (5) | 39.8 | 38.9 | 38.5 | 39.2 | 39.7 | **39.9** |
+|  | Science (4) | 36.5 | 36.5 | 38.5 | 38.8 | 38.6 | **39.8** |
+|  | Reading (2) | 38.1 | 40.8 | 38.3 | 41.8 | 40.9 | **43.5** |
+|  | Math (2) | 11.7 | 12.7 | 12.3 | **12.9** | 11.5 | 12.8 |
+|  | Mean (13) | 34.2 | 34.4 | 34.4 | 35.4 | 35.2 | **36.2** |
+|  | Mean rank | 4.15 | 4.23 | 3.69 | 2.54 | 3.08 | **2.38** |
+| 1B, 5B tokens | Commonsense (5) | 40.0 | 40.2 | 40.7 | 41.1 | 40.7 | **41.8** |
+|  | Science (4) | 38.9 | 39.5 | 40.7 | 42.2 | 42.4 | **43.0** |
+|  | Reading (2) | 42.1 | 43.0 | 41.6 | 43.8 | 38.3 | **44.7** |
+|  | Math (2) | 12.1 | 11.4 | 12.0 | **12.5** | 12.2 | 12.4 |
+|  | Mean (13) | 35.7 | 36.0 | 36.4 | 37.4 | 36.5 | **38.1** |
+|  | Mean rank | 4.54 | 4.38 | 3.77 | 2.62 | 3.15 | **2.08** |
+| 1B, 10B tokens | Commonsense (5) | 40.5 | – | – | – | – | **42.4** |
+|  | Science (4) | 41.0 | – | – | – | – | **44.1** |
+|  | Reading (2) | 43.0 | – | – | – | – | **47.0** |
+|  | Math (2) | 11.5 | – | – | – | – | **12.8** |
+|  | Mean (13) | 36.6 | – | – | – | – | **39.1** |
 
-**Instruction finetuning.** Each model finetuned on Alpaca (cleaned) plus Dolly, or on smol-smoltalk. NLL: held-out negative log-likelihood on the instruction data. Win rate: AlpacaEval win rate against the vanilla Transformer of the same size and recipe (both answer orders judged by gpt-5.6-sol, ties count half). Bold: best per block.
+**Instruction finetuning.** Each model finetuned on Alpaca (cleaned) plus Dolly, or on smol-smoltalk. NLL: held-out negative log-likelihood on the instruction data. Win rate: AlpacaEval win rate against the vanilla Transformer of the same size and recipe (both answer orders judged by gpt-5.6-sol, ties count half). Bold: best per row. –: not run, or the vanilla Transformer itself for win rates.
 
-| Size | Model | Alpaca NLL | Alpaca win rate | SmolTalk NLL | SmolTalk win rate |
-|:---|:---|:---:|:---:|:---:|:---:|
-| 300M | vanilla | 2.392 | – | 1.760 | – |
-|  | DenseFormer | 2.342 | 0.55 | 1.722 | 0.57 |
-|  | Hyper-conn. | 2.298 | 0.59 | 1.684 | 0.58 |
-|  | mHC | 2.277 | 0.58 | 1.664 | 0.62 |
-|  | MUDDFormer | 2.256 | 0.63 | 1.639 | 0.64 |
-|  | DAGFormer | **2.203** | **0.65** | **1.595** | **0.70** |
-| 1B, 5B tokens | vanilla | 2.208 | – | 1.728 | – |
-|  | DenseFormer | 2.186 | 0.46 | 1.706 | 0.50 |
-|  | Hyper-conn. | 2.150 | 0.51 | 1.673 | 0.56 |
-|  | mHC | 2.110 | 0.55 | 1.633 | 0.61 |
-|  | MUDDFormer | 2.104 | 0.57 | 1.617 | 0.56 |
-|  | DAGFormer | **2.042** | **0.63** | **1.558** | **0.66** |
-| 1B, 10B tokens | vanilla | 2.120 | – | 1.669 | – |
-|  | DAGFormer | **1.974** | **0.66** | **1.516** | **0.70** |
+| Size | Metric | vanilla | DenseFormer | Hyper-conn. | mHC | MUDDFormer | DAGFormer |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 300M | Alpaca NLL | 2.392 | 2.342 | 2.298 | 2.277 | 2.256 | **2.203** |
+|  | Alpaca win rate | – | 0.55 | 0.59 | 0.58 | 0.63 | **0.65** |
+|  | SmolTalk NLL | 1.760 | 1.722 | 1.684 | 1.664 | 1.639 | **1.595** |
+|  | SmolTalk win rate | – | 0.57 | 0.58 | 0.62 | 0.64 | **0.70** |
+| 1B, 5B tokens | Alpaca NLL | 2.208 | 2.186 | 2.150 | 2.110 | 2.104 | **2.042** |
+|  | Alpaca win rate | – | 0.46 | 0.51 | 0.55 | 0.57 | **0.63** |
+|  | SmolTalk NLL | 1.728 | 1.706 | 1.673 | 1.633 | 1.617 | **1.558** |
+|  | SmolTalk win rate | – | 0.50 | 0.56 | 0.61 | 0.56 | **0.66** |
+| 1B, 10B tokens | Alpaca NLL | 2.120 | – | – | – | – | **1.974** |
+|  | Alpaca win rate | – | – | – | – | – | **0.66** |
+|  | SmolTalk NLL | 1.669 | – | – | – | – | **1.516** |
+|  | SmolTalk win rate | – | – | – | – | – | **0.70** |
 
-**Structured pruning.** Pruning during domain finetuning on MathInstruct: held-out NLL of the unpruned finetune (0%) and the damage (loss increase relative to it, %) at 50% and 70% backbone sparsity. Bold: best per column.
+**Structured pruning.** Pruning during domain finetuning on MathInstruct: held-out NLL of the unpruned finetune (0%) and the damage (loss increase relative to it, %) at 50% and 70% backbone sparsity. Bold: best per row.
 
-| Model | 75M NLL (0%) | 75M damage 50% | 75M damage 70% | 150M NLL (0%) | 150M damage 50% | 150M damage 70% | 300M NLL (0%) | 300M damage 50% | 300M damage 70% |
-|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| vanilla | 2.387 | 9.0 | **17.9** | 1.854 | 9.9 | 21.2 | 1.676 | 7.4 | 17.8 |
-| DenseFormer | 2.383 | 9.5 | 18.7 | 1.830 | 9.5 | 20.7 | 1.641 | 7.9 | 18.5 |
-| Hyper-conn. | 2.306 | 9.5 | 19.5 | 1.804 | 9.7 | 21.4 | 1.604 | 7.7 | 17.8 |
-| mHC | 2.328 | 9.0 | 20.1 | 1.813 | 9.5 | 21.0 | 1.585 | 8.4 | 18.4 |
-| MUDDFormer | 2.362 | 10.6 | 22.3 | **1.692** | 12.8 | 28.6 | 1.558 | 9.3 | 22.0 |
-| DAGFormer | **2.185** | **7.6** | 22.2 | 1.724 | **9.2** | **20.2** | **1.507** | **6.9** | **16.5** |
+| Size | Metric | vanilla | DenseFormer | Hyper-conn. | mHC | MUDDFormer | DAGFormer |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 75M | NLL, unpruned | 2.387 | 2.383 | 2.306 | 2.328 | 2.362 | **2.185** |
+|  | Damage at 50% (%) | 9.0 | 9.5 | 9.5 | 9.0 | 10.6 | **7.6** |
+|  | Damage at 70% (%) | **17.9** | 18.7 | 19.5 | 20.1 | 22.3 | 22.2 |
+| 150M | NLL, unpruned | 1.854 | 1.830 | 1.804 | 1.813 | **1.692** | 1.724 |
+|  | Damage at 50% (%) | 9.9 | 9.5 | 9.7 | 9.5 | 12.8 | **9.2** |
+|  | Damage at 70% (%) | 21.2 | 20.7 | 21.4 | 21.0 | 28.6 | **20.2** |
+| 300M | NLL, unpruned | 1.676 | 1.641 | 1.604 | 1.585 | 1.558 | **1.507** |
+|  | Damage at 50% (%) | 7.4 | 7.9 | 7.7 | 8.4 | 9.3 | **6.9** |
+|  | Damage at 70% (%) | 17.8 | 18.5 | 17.8 | 18.4 | 22.0 | **16.5** |
 
 More results, ablations and analyses are in the [paper](https://arxiv.org/abs/2610.19625).
 
